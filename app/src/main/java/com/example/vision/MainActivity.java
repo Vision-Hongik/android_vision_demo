@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("t", "startGps:" + location.getLongitude());
             Log.e("t", "startGps:" + location.getLatitude());
             Log.e("t", "정확" + location.getAccuracy());
-
         }
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
