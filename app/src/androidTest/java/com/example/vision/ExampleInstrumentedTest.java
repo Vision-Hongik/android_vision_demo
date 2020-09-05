@@ -1,4 +1,4 @@
-package com.example.volley_example;
+package com.example.vision;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.volley_example", appContext.getPackageName());
+        assertEquals("com.example.vision", appContext.getPackageName());
     }
 }

@@ -1,13 +1,10 @@
-package com.example.volley_example;
+package com.example.vision;
 
 import android.graphics.Bitmap;
 import android.util.Base64;
 
 
-import androidx.annotation.Nullable;
-
 import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;

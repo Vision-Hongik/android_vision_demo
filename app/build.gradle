@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.1"
 
     defaultConfig {
-        applicationId "com.example.volley_example"
+        applicationId "com.example.vision"
         minSdkVersion 25
         targetSdkVersion 30
         versionCode 1

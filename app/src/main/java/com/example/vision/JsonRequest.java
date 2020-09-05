@@ -1,12 +1,10 @@
-package com.example.volley_example;
+package com.example.vision;
 
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.Map;
 
 
 public class JsonRequest extends JsonArrayRequest {

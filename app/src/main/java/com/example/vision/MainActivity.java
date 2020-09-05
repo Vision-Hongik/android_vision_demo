@@ -1,4 +1,4 @@
-package com.example.volley_example;
+package com.example.vision;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +9,6 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
@@ -17,12 +16,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.vision.R;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -33,10 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
     private RequestQueue queue;
@@ -97,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
         public void onResponse(JSONArray response) {
             Log.e("h","Resonps!!");
             Log.e("h", "Response: " + response.toString());
-            Toast.makeText(getApplicationContext(), "sucsess", Toast.LENGTH_LONG).show();
-
         } //onResponse
     };
 

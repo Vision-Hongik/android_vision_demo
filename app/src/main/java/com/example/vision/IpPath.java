@@ -1,4 +1,4 @@
-package com.example.volley_example;
+package com.example.vision;
 
 public class IpPath {
     static final String  WEBIP = "http://3.137.96.112:5000";
