@@ -1,11 +1,12 @@
 package com.example.vision;
 
 import android.graphics.Bitmap;
-import android.util.Base64;
 
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,7 +26,8 @@ public class OcrRequest extends JsonObjectRequest {
     public byte[] getBody() {
         JSONObject j = new JSONObject();
         try {
-            j.put("data",Base64.encodeToString(ocrImage,0));
+            j.put("data",new JSONArray(ocrImage));
+            //j.put("data",Base64.encodeToString(ocrImage,0));
         } catch (JSONException e) {
             e.printStackTrace();
         }

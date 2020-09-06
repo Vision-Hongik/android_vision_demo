@@ -5,16 +5,17 @@ import org.json.JSONObject;
 
 public class Mapdata {
     private String id;
+    private String name;
     private String type;
 
     public Mapdata(){
-        this.id = "";
-        this.type = "";
+
     }
 
     public Mapdata(JSONObject job){
         try {
-            this.id = job.getJSONObject("_id").getString("$oid");
+            this.id = job.getString("_id");
+            this.name = job.getString("name");
             this.type = job.getString("type");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -25,6 +26,8 @@ public class Mapdata {
         this.id = id;
     }
 
+    public void setName(String name) { this.name = name; }
+
     public void setType(String type){
         this.type = type;
     }
@@ -32,6 +35,8 @@ public class Mapdata {
     public String getId(){
         return this.id;
     }
+
+    public String getName() { return this.name; }
 
     public String getType(){
         return this.type;

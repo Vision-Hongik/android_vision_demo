@@ -16,12 +16,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.vision.R;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -32,7 +30,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private RequestQueue queue;
@@ -91,8 +92,20 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onResponse(JSONArray response) {
-            Log.e("h","Resonps!!");
-            Log.e("h", "Response: " + response.toString());
+            ArrayList<Mapdata> tmpMapdataList = new ArrayList<Mapdata>();
+
+            for(int i = 0; i< response.length(); i++){
+                try {
+                    tmpMapdataList.add(new Mapdata(response.getJSONObject(i)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            service.setMapdataArrayList(tmpMapdataList);
+            Log.e("h", "length " + service.getMapdataArrayList().size());
+            for(int i=0; i < service.getMapdataArrayList().size(); i++){
+                Log.e("h", "onResponse: " + service.getMapdataArrayList().get(i).getName());
+            }
         } //onResponse
     };
 
@@ -109,10 +122,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onLocationChanged(Location location) {
 
-            Log.e("t", "startGps:" + location.getProvider());
-            Log.e("t", "startGps:" + location.getLongitude());
-            Log.e("t", "startGps:" + location.getLatitude());
-            Log.e("t", "정확" + location.getAccuracy());
+            service.setLatitude(location.getLatitude());
+            service.setLongitude(location.getLongitude());
+
+            Log.e("t", "service 위도: " + service.getLatitude());
+            Log.e("t", "service 경도: " + service.getLongitude()+ "\n..\n");
+
         }
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
