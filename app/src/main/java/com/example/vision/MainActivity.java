@@ -103,9 +103,11 @@ public class MainActivity extends AppCompatActivity {
             }
             service.setMapdataArrayList(tmpMapdataList);
             Log.e("h", "length " + service.getMapdataArrayList().size());
+
             for(int i=0; i < service.getMapdataArrayList().size(); i++){
                 Log.e("h", "onResponse: " + service.getMapdataArrayList().get(i).getName());
             }
+
         } //onResponse
     };
 

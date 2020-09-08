@@ -30,11 +30,13 @@ public class MyGps {
 
     public boolean startGps() {
         Log.e("t", "startGps: Start!!");
+
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(this.activity.getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.activity, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     0);
-        } else {
+        }
+        else {
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             boolean flag = true;
             if (location == null)
@@ -62,7 +64,5 @@ public class MyGps {
         }
         return false;
     }
-
-
 
 }
