@@ -52,10 +52,6 @@ public class MyGps {
                 Log.e("t", "정확" + location.getAccuracy());
             }
 
-            lm.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-                    300,
-                    0,
-                    gpsLocationListener);
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                     300,
                     0,

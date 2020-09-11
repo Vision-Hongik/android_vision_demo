@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,9 +14,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -40,43 +44,79 @@ public class MainActivity extends AppCompatActivity {
     private LocationRequest locationRequest;
     private MyGps myGps;
     private Service service;
+    private Voice voice;
+
+    private Button apiButton;
+    private Button sttButton;
+    private Button ttsButton;
+    private EditText sttText;
+    private EditText ttsText;
+    private EditText stt_statusText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // setContenteView후에 셋팅해야함!! 그전에는 널값임
+        sttButton = (Button)findViewById(R.id.STT);
+        ttsButton = (Button)findViewById(R.id.TTS);
+        apiButton = (Button) findViewById(R.id.api);
+        sttText = (EditText)findViewById(R.id.sttEdit);
+        ttsText = (EditText)findViewById(R.id.ttsEdit);
+        stt_statusText = (EditText)findViewById(R.id.stt_statusEdit);
+
+
         // GPS가 꺼져있다면 On Dialog
         createLocationRequest();
         turn_on_GPS_dialog();
 
-        //service = new Service();
         //Gps set listener
         myGps = new MyGps(MainActivity.this,locationListener);
-
         //start!
         myGps.startGps();
-
+        voice = new Voice(this,voiceListener);
         service = new Service();
 
 
-        // activity 객체들
-        Button bLogin = (Button) findViewById(R.id.bSignIn);
         // 전송 버튼!! 리스너
-        bLogin.setOnClickListener(new View.OnClickListener() {
+        apiButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String temp = "hello!";
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ocrtest);
+
+                String temp = "hello!"; // Map 전송쪽에 보낼 메세지
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ocrtest); //OCR에 보낼 비트맵
+
+                RequestQueue queue = Volley.newRequestQueue(MainActivity.this); // 전송 큐
                 Log.e("t", "Send! ");
-                // EditText에 들어온 ID와 PW로 로그인 시도!
+
+                // Map api에 전송
                 JsonRequest jsonRequest = new JsonRequest(temp.getBytes(), jsonArrayListener);
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                 queue.add(jsonRequest);
 
+                // OCR api에 전송
                 OcrRequest ocrRequest = new OcrRequest(bitmap,ocrListener);
                 queue.add(ocrRequest);
+            }
+        });
+
+
+        sttButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("v", "service 음성인식 시작!");
+                voice.STT(); // 음성 인식 시작!! 리스너에 따라 행동함.
+
+            }
+        });
+
+
+        ttsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("v", "service 음성으로 변환!!");
+                voice.TTS(ttsText.getText().toString()); // 음성 인식 시작!! 리스너에 따라 행동함.
             }
         });
 
@@ -119,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+
     // GPS Location 정보 획득시 리스너 객체
     final LocationListener locationListener = new LocationListener() {
         @Override
@@ -146,6 +187,78 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+
+
+    private RecognitionListener voiceListener= new RecognitionListener() {
+        @Override
+        public void onReadyForSpeech(Bundle bundle) {
+            stt_statusText.setText("onReadyForSpeech..........." + "\r\n" + stt_statusText.getText());
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+            stt_statusText.setText("지금부터 말을 해주세요..........." + "\r\n" + stt_statusText.getText());
+        }
+
+        @Override
+        public void onRmsChanged(float v) {
+        }
+
+        @Override
+        public void onBufferReceived(byte[] bytes) {
+            stt_statusText.setText("onBufferReceived..........." + "\r\n" + stt_statusText.getText());
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+            stt_statusText.setText("onEndOfSpeech..........." + "\r\n" + stt_statusText.getText());
+        }
+
+        @Override
+        public void onError(int i) {
+            stt_statusText.setText("천천히 다시 말해 주세요..........." + "\r\n" + stt_statusText.getText());
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            String key = "";
+            key = SpeechRecognizer.RESULTS_RECOGNITION;
+            ArrayList<String> mResult = results.getStringArrayList(key);
+            String[] rs = new String[mResult.size()];
+            mResult.toArray(rs);
+            stt_statusText.setText("onResult..." + "\r\n" + sttText.getText());
+            sttText.setText(rs[0] + "\r\n" + sttText.getText());
+            FuncVoiceOrderCheck(rs[0]);
+        }
+
+        @Override
+        public void onPartialResults(Bundle bundle) {
+            stt_statusText.setText("onPartialResults..........."+"\r\n"+stt_statusText.getText());
+        }
+
+        @Override
+        public void onEvent(int i, Bundle bundle) {
+            stt_statusText.setText("onEvent..........."+"\r\n"+stt_statusText.getText());
+        }
+    };
+
+
+    private void FuncVoiceOrderCheck(String VoiceMsg){
+        if(VoiceMsg.length()<1)return;
+
+        VoiceMsg=VoiceMsg.replace(" ","");//공백제거
+
+        if(VoiceMsg.indexOf("카카오톡")>-1 || VoiceMsg.indexOf("카톡")>-1){
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.kakao.talk");
+            startActivity(launchIntent);
+            onDestroy();
+        }//카카오톡 어플로 이동
+        if(VoiceMsg.indexOf("전동꺼")>-1 || VoiceMsg.indexOf("불꺼")>-1){
+            // FuncVoiceOut("전등을 끕니다");//전등을 끕니다 라는 음성 출력
+            voice.TTS("전등을 끕니다.");
+        }
+    }
 
 
 
@@ -208,5 +321,11 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     0);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        voice.close();
     }
 }
