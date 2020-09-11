@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         // Voice
         voice = new Voice(this,voiceListener);
         // API Server
-        requestQueue = Volley.newRequestQueue(MainActivity.this); // 전송 큐
+        requestQueue = Volley.newRequestQueue(MainActivity.this);  // 전송 큐
 
         // Service
         service = new Service();
