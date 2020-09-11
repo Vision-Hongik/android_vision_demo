@@ -40,7 +40,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private RequestQueue queue;
+    private RequestQueue requestQueue;
     private LocationRequest locationRequest;
     private MyGps myGps;
     private Service service;
@@ -71,11 +71,15 @@ public class MainActivity extends AppCompatActivity {
         createLocationRequest();
         turn_on_GPS_dialog();
 
-        //Gps set listener
+        // Gps
         myGps = new MyGps(MainActivity.this,locationListener);
-        //start!
         myGps.startGps();
+        // Voice
         voice = new Voice(this,voiceListener);
+        // API Server
+        requestQueue = Volley.newRequestQueue(MainActivity.this); // 전송 큐
+
+        // Service
         service = new Service();
 
 
@@ -88,16 +92,15 @@ public class MainActivity extends AppCompatActivity {
                 String temp = "hello!"; // Map 전송쪽에 보낼 메세지
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ocrtest); //OCR에 보낼 비트맵
 
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this); // 전송 큐
                 Log.e("t", "Send! ");
 
                 // Map api에 전송
                 JsonRequest jsonRequest = new JsonRequest(temp.getBytes(), jsonArrayListener);
-                queue.add(jsonRequest);
+                requestQueue.add(jsonRequest);
 
                 // OCR api에 전송
                 OcrRequest ocrRequest = new OcrRequest(bitmap,ocrListener);
-                queue.add(ocrRequest);
+                requestQueue.add(ocrRequest);
             }
         });
 
