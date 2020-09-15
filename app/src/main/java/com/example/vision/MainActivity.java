@@ -45,13 +45,22 @@ public class MainActivity extends AppCompatActivity {
     private MyGps myGps;
     private Service service;
     private Voice voice;
+    private Voice serviceVoice;
 
     private Button apiButton;
     private Button sttButton;
     private Button ttsButton;
+    private Button initButton;
+    private EditText srcEdit;
+    private EditText dstEdit;
     private EditText sttText;
     private EditText ttsText;
     private EditText stt_statusText;
+
+    String src_Station;
+    String src_Exit;
+    String dst_Station;
+    String dst_Exit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +71,13 @@ public class MainActivity extends AppCompatActivity {
         sttButton = (Button)findViewById(R.id.STT);
         ttsButton = (Button)findViewById(R.id.TTS);
         apiButton = (Button) findViewById(R.id.api);
+        initButton = (Button)findViewById(R.id.init_button);
+
         sttText = (EditText)findViewById(R.id.sttEdit);
         ttsText = (EditText)findViewById(R.id.ttsEdit);
         stt_statusText = (EditText)findViewById(R.id.stt_statusEdit);
+        srcEdit = (EditText)findViewById(R.id.source_edit);
+        dstEdit = (EditText)findViewById(R.id.dest_edit);
 
 
         // GPS가 꺼져있다면 On Dialog
@@ -74,8 +87,10 @@ public class MainActivity extends AppCompatActivity {
         // Gps
         myGps = new MyGps(MainActivity.this,locationListener);
         myGps.startGps();
+
         // Voice
         voice = new Voice(this,voiceListener);
+
         // API Server
         requestQueue = Volley.newRequestQueue(MainActivity.this);  // 전송 큐
 
@@ -247,6 +262,10 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+
+//--Function----------------------------------------------------------------------------------------------------------------------------------------
+
+
     private void FuncVoiceOrderCheck(String VoiceMsg){
         if(VoiceMsg.length()<1)return;
 
@@ -262,10 +281,6 @@ public class MainActivity extends AppCompatActivity {
             voice.TTS("전등을 끕니다.");
         }
     }
-
-
-
-//--Function----------------------------------------------------------------------------------------------------------------------------------------
 
     // GPS 꺼져있을 경우 alert dialog
     protected void createLocationRequest()
