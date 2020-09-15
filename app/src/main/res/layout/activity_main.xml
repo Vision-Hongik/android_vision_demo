@@ -15,7 +15,7 @@
         android:id="@+id/api"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:textAllCaps="false"
         android:text="API Submit" />
 
@@ -24,7 +24,7 @@
         android:id="@+id/sttEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:inputType="textPersonName" />
 
@@ -40,7 +40,7 @@
         android:id="@+id/STT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="false"
         android:text="Speech To Text" />
 
@@ -49,7 +49,7 @@
         android:id="@+id/ttsEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:inputType="textPersonName" />
 
@@ -57,7 +57,7 @@
         android:id="@+id/TTS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="false"
         android:text="Text To Speech" />
 
@@ -65,7 +65,7 @@
         android:id="@+id/source_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:inputType="textPersonName" />
 
@@ -81,7 +81,7 @@
         android:id="@+id/init_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="false"
         android:text="Init" />
 

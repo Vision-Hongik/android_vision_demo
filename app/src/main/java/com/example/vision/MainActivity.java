@@ -138,6 +138,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        initButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String temp;
+                Log.e("v", "음성으로 초기화 값 입력 시작!");
+                voice.TTS("어디 역에서 출발 하시나요?");
+                src_Station = voice.baseSTT();
+                srcEdit.setText(src_Station);
+
+                voice.TTS("어디 역으로 시나요?");
+                dst_Station = voice.baseSTT();
+                dstEdit.setText(dst_Station);
+
+            }
+        });
+
     } // oncreate end
 
 
