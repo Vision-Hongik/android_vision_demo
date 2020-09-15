@@ -8,12 +8,25 @@ public class Service {
 
     private double longitude;
     private double latitude;
-
+    private String source_Station;
+    private String source_Exit;
+    private String dest_Station;
+    private String dest_Exit;
 
     //private jsonObject Array
     private ArrayList<Mapdata> mapdataArrayList;
     //instances data structure class;
 
+    public Service(){ }
+
+    public Service(String source_Station, String source_Exit, String dest_Station, String dest_Exit){
+        // if 출발지점이 null 이라면, 알아서 계산한다.
+        this.source_Station = source_Station;
+        this.source_Exit = source_Exit;
+        this.dest_Station = dest_Station;
+        this.dest_Exit = dest_Exit;
+
+    }
     public void startService(){
         mapdataArrayList = new ArrayList<Mapdata>();
 
@@ -51,6 +64,14 @@ public class Service {
         this.latitude = latitude;
     }
 
+    public void setSource_Station(String source_Station){ this.source_Station = source_Station; }
+
+    public void setSource_Exit(String source_Exit){ this.source_Exit = source_Exit; }
+
+    public void setDest_Station(String dest_Station){ this.dest_Station = dest_Station; }
+
+    public void setDest_Exit(String dest_Exit){ this.dest_Exit= dest_Exit; }
+
     public double getLongitude(){
         return this.longitude;
     }
@@ -58,6 +79,14 @@ public class Service {
     public double getLatitude(){
         return this.latitude;
     }
+
+    public String getSource_Station() {return this.source_Station;}
+
+    public String getSource_Exit() {return this.source_Exit;}
+
+    public String getDest_Station() {return this.dest_Station;}
+
+    public String getDest_Exit() {return this.dest_Exit;}
 
     public void setMapdataArrayList(ArrayList<Mapdata> mapList){
         this.mapdataArrayList = mapList;
@@ -75,6 +104,7 @@ public class Service {
     public Mapdata getMapdataFromIdx(int index){
         return this.mapdataArrayList.get(index);
     }
+
 
 }
 
