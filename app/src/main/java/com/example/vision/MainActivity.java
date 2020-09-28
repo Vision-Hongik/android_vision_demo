@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String temp;
                 Log.e("v", "음성으로 초기화 값 입력 시작!");
+
                 voice.TTS("어디 역에서 출발 하시나요?");
                 voice.setRecognitionListener(sourceStationVoiceListener);
                 try {
@@ -463,7 +464,125 @@ public class MainActivity extends AppCompatActivity {
             service.setDest_Station(mResult.get(0));
             Log.e("v", "End Station onResults: " + service.getDest_Station());
 
-            srcEdit.setText(mResult.get(0));
+            dstEdit.setText(mResult.get(0));
+
+            try {
+                Thread.sleep(2000);
+                voice.TTS("출발지는 " + service.getSource_Station() + "도착지는 " + service.getDest_Station()+ "이 맞습니까? 네 아니요로 대답해주세요.");
+                voice.setRecognitionListener(confirmVoiceListener);
+                Thread.sleep(6000);
+                voice.STT();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onPartialResults(Bundle bundle) {
+        }
+
+        @Override
+        public void onEvent(int i, Bundle bundle) {
+        }
+
+    };
+
+
+    private RecognitionListener confirmVoiceListener = new RecognitionListener() {
+        @Override
+        public void onReadyForSpeech(Bundle bundle) {
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+        }
+
+        @Override
+        public void onRmsChanged(float v) {
+        }
+
+        @Override
+        public void onBufferReceived(byte[] bytes) {
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+        }
+
+        @Override
+        public void onError(int i) {
+            voice.TTS("음성 에러 5초후 다시 말씀해주세요!");
+            String message;
+
+            switch (i) {
+
+                case SpeechRecognizer.ERROR_AUDIO:
+                    message = "오디오 에러";
+                    break;
+
+                case SpeechRecognizer.ERROR_CLIENT:
+                    message = "클라이언트 에러";
+                    break;
+
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    message = "퍼미션없음";
+                    break;
+
+                case SpeechRecognizer.ERROR_NETWORK:
+                    message = "네트워크 에러";
+                    break;
+
+                case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                    message = "네트웍 타임아웃";
+                    break;
+
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    message = "찾을수 없음";;
+                    break;
+
+                case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                    message = "바쁘대";
+                    break;
+
+                case SpeechRecognizer.ERROR_SERVER:
+                    message = "서버이상";;
+                    break;
+
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    message = "말하는 시간초과";
+                    break;
+
+                default:
+                    message = "알수없음";
+                    break;
+            }
+            Log.e("GoogleActivity", "SPEECH ERROR : " + message);
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            String key = "";
+            key = SpeechRecognizer.RESULTS_RECOGNITION;
+            ArrayList<String> mResult = results.getStringArrayList(key);
+
+            String answer = mResult.get(0);
+            Log.e("v", "answer: " + answer);
+
+            try {
+                Thread.sleep(2000);
+                if(answer.charAt(0) != '네' && answer.charAt(0) != '내'){
+                    voice.TTS("어디 역에서 출발 하시나요?");
+                    voice.setRecognitionListener(sourceStationVoiceListener);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    voice.STT();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
