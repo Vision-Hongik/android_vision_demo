@@ -104,13 +104,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String temp = "hello!"; // Map 전송쪽에 보낼 메세지
+                String temp = "sangsu"; // Map 전송쪽에 보낼 메세지
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ocrtest); //OCR에 보낼 비트맵
-
                 Log.e("t", "Send! ");
 
                 // Map api에 전송
-                JsonRequest jsonRequest = new JsonRequest(temp.getBytes(), jsonArrayListener);
+                MapRequest jsonRequest = new MapRequest(temp, jsonArrayListener);
                 requestQueue.add(jsonRequest);
 
                 // OCR api에 전송

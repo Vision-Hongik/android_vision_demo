@@ -128,7 +128,7 @@ public class Voice {
         @Override
         public void onError(int i) {
             Voice.this.TTS("음성 에러. 음성 재인식 시작");
-            Voice.this.resBaseSTT = Voice.this.baseSTT();
+            //Voice.this.resBaseSTT = Voice.this.baseSTT();
         }
 
         @Override
