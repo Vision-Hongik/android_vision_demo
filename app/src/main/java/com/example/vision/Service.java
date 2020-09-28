@@ -1,7 +1,5 @@
 package com.example.vision;
 
-import android.app.MediaRouteActionProvider;
-
 import java.util.ArrayList;
 
 public class Service {
@@ -14,7 +12,7 @@ public class Service {
     private String dest_Exit;
 
     //private jsonObject Array
-    private ArrayList<Mapdata> mapdataArrayList;
+    private ArrayList<Sector> sectorArrayList;
     //instances data structure class;
 
     public Service(){ }
@@ -28,7 +26,7 @@ public class Service {
 
     }
     public void startService(){
-        mapdataArrayList = new ArrayList<Mapdata>();
+        sectorArrayList = new ArrayList<Sector>();
 
         // voice 출발지  -> 모르면 GPS 찾기  -> GPS랑 mapdata를 사용해서 찾는 함수 구현. 상수
         // 몇번출구? -> 2번
@@ -88,21 +86,21 @@ public class Service {
 
     public String getDest_Exit() {return this.dest_Exit;}
 
-    public void setMapdataArrayList(ArrayList<Mapdata> mapList){
-        this.mapdataArrayList = mapList;
+    public void setSectorArrayList(ArrayList<Sector> mapList){
+        this.sectorArrayList = mapList;
     }
 
-    public void push_backMapdata(Mapdata md){
-        mapdataArrayList.add(md);
+    public void push_backMapdata(Sector md){
+        sectorArrayList.add(md);
     }
 
     // 얕 복사본을 넘겨준다.은 .. -> Mapdata 클래스의 깊은 복사자를 만들어야되는데 귀찮다..ㅜ
-    public ArrayList<Mapdata> getMapdataArrayList() {
-        return this.mapdataArrayList;
+    public ArrayList<Sector> getMapdataArrayList() {
+        return this.sectorArrayList;
     }
 
-    public Mapdata getMapdataFromIdx(int index){
-        return this.mapdataArrayList.get(index);
+    public Sector getMapdataFromIdx(int index){
+        return this.sectorArrayList.get(index);
     }
 
 

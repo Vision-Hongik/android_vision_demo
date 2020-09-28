@@ -3,16 +3,16 @@ package com.example.vision;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Mapdata {
+public class Sector {
     private String id;
     private String name;
     private String type;
 
-    public Mapdata(){
+    public Sector(){
 
     }
 
-    public Mapdata(JSONObject job){
+    public Sector(JSONObject job){
         try {
             this.id = job.getString("_id");
             this.name = job.getString("name");

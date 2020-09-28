@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
@@ -57,10 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText ttsText;
     private EditText stt_statusText;
 
-    String src_Station;
-    String src_Exit;
-    String dst_Station;
-    String dst_Exit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Voice
         voice = new Voice(this,voiceListener);
-
+        serviceVoice = new Voice(this,null);
         // API Server
         requestQueue = Volley.newRequestQueue(MainActivity.this);  // 전송 큐
 
@@ -123,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.e("v", "service 음성인식 시작!");
+                voice.setRecognitionListener(voiceListener);
                 voice.STT(); // 음성 인식 시작!! 리스너에 따라 행동함.
 
             }
@@ -144,12 +142,13 @@ public class MainActivity extends AppCompatActivity {
                 String temp;
                 Log.e("v", "음성으로 초기화 값 입력 시작!");
                 voice.TTS("어디 역에서 출발 하시나요?");
-                src_Station = voice.baseSTT();
-                srcEdit.setText(src_Station);
-
-                voice.TTS("어디 역으로 시나요?");
-                dst_Station = voice.baseSTT();
-                dstEdit.setText(dst_Station);
+                voice.setRecognitionListener(sourceStationVoiceListener);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                voice.STT();
 
             }
         });
@@ -166,16 +165,16 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onResponse(JSONArray response) {
-            ArrayList<Mapdata> tmpMapdataList = new ArrayList<Mapdata>();
+            ArrayList<Sector> tmpMapdataList = new ArrayList<Sector>();
 
             for(int i = 0; i< response.length(); i++){
                 try {
-                    tmpMapdataList.add(new Mapdata(response.getJSONObject(i)));
+                    tmpMapdataList.add(new Sector(response.getJSONObject(i)));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            service.setMapdataArrayList(tmpMapdataList);
+            service.setSectorArrayList(tmpMapdataList);
             Log.e("h", "length " + service.getMapdataArrayList().size());
 
             for(int i=0; i < service.getMapdataArrayList().size(); i++){
@@ -220,8 +219,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("t", "startGps: 사용불가");
         }
     };
-
-
 
 
     private RecognitionListener voiceListener= new RecognitionListener() {
@@ -275,6 +272,208 @@ public class MainActivity extends AppCompatActivity {
         public void onEvent(int i, Bundle bundle) {
             stt_statusText.setText("onEvent..........."+"\r\n"+stt_statusText.getText());
         }
+    };
+
+
+    private RecognitionListener sourceStationVoiceListener = new RecognitionListener() {
+        @Override
+        public void onReadyForSpeech(Bundle bundle) {
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+        }
+
+        @Override
+        public void onRmsChanged(float v) {
+        }
+
+        @Override
+        public void onBufferReceived(byte[] bytes) {
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+        }
+
+        @Override
+        public void onError(int i) {
+            voice.TTS("음성 에러 5초후 다시 말씀해주세요!");
+            String message;
+
+            switch (i) {
+
+                case SpeechRecognizer.ERROR_AUDIO:
+                    message = "오디오 에러";
+                    break;
+
+                case SpeechRecognizer.ERROR_CLIENT:
+                    message = "클라이언트 에러";
+                    break;
+
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    message = "퍼미션없음";
+                    break;
+
+                case SpeechRecognizer.ERROR_NETWORK:
+                    message = "네트워크 에러";
+                    break;
+
+                case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                    message = "네트웍 타임아웃";
+                    break;
+
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    message = "찾을수 없음";;
+                    break;
+
+                case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                    message = "바쁘대";
+                    break;
+
+                case SpeechRecognizer.ERROR_SERVER:
+                    message = "서버이상";;
+                    break;
+
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    message = "말하는 시간초과";
+                    break;
+
+                default:
+                    message = "알수없음";
+                    break;
+            }
+            Log.e("GoogleActivity", "SPEECH ERROR : " + message);
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            String key = "";
+            key = SpeechRecognizer.RESULTS_RECOGNITION;
+            ArrayList<String> mResult = results.getStringArrayList(key);
+
+            service.setSource_Station(mResult.get(0));
+            Log.e("v", "Start Station onResults: " + service.getSource_Station() );
+
+            srcEdit.setText(mResult.get(0));
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            voice.TTS("어디 역으로 가시나요?");
+            voice.setRecognitionListener(destStationVoiceListener);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            voice.STT();
+        }
+
+        @Override
+        public void onPartialResults(Bundle bundle) {
+        }
+
+        @Override
+        public void onEvent(int i, Bundle bundle) {
+        }
+
+    };
+
+
+    private RecognitionListener destStationVoiceListener = new RecognitionListener() {
+        @Override
+        public void onReadyForSpeech(Bundle bundle) {
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+        }
+
+        @Override
+        public void onRmsChanged(float v) {
+        }
+
+        @Override
+        public void onBufferReceived(byte[] bytes) {
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+        }
+
+        @Override
+        public void onError(int i) {
+            voice.TTS("음성 에러 5초후 다시 말씀해주세요!");
+            String message;
+
+            switch (i) {
+
+                case SpeechRecognizer.ERROR_AUDIO:
+                    message = "오디오 에러";
+                    break;
+
+                case SpeechRecognizer.ERROR_CLIENT:
+                    message = "클라이언트 에러";
+                    break;
+
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    message = "퍼미션없음";
+                    break;
+
+                case SpeechRecognizer.ERROR_NETWORK:
+                    message = "네트워크 에러";
+                    break;
+
+                case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                    message = "네트웍 타임아웃";
+                    break;
+
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    message = "찾을수 없음";;
+                    break;
+
+                case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                    message = "바쁘대";
+                    break;
+
+                case SpeechRecognizer.ERROR_SERVER:
+                    message = "서버이상";;
+                    break;
+
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    message = "말하는 시간초과";
+                    break;
+
+                default:
+                    message = "알수없음";
+                    break;
+            }
+            Log.e("GoogleActivity", "SPEECH ERROR : " + message);
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            String key = "";
+            key = SpeechRecognizer.RESULTS_RECOGNITION;
+            ArrayList<String> mResult = results.getStringArrayList(key);
+
+            service.setDest_Station(mResult.get(0));
+            Log.e("v", "End Station onResults: " + service.getDest_Station());
+
+            srcEdit.setText(mResult.get(0));
+        }
+
+        @Override
+        public void onPartialResults(Bundle bundle) {
+        }
+
+        @Override
+        public void onEvent(int i, Bundle bundle) {
+        }
+
     };
 
 
