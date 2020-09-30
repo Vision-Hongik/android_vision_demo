@@ -19,7 +19,7 @@ public class Sector {
     private Boolean subwayTracks; //탑승장
     private Boolean exit;
     private Boolean enterGate; //개찰구
-    private JSONArray GPS; // [위도, 경도]
+    private JSONObject GPS; // [위도, 경도]
 
 
     public Sector(){
@@ -41,7 +41,7 @@ public class Sector {
             this.subwayTracks = job.getBoolean("subwayTracks");
             this.exit = job.getBoolean("exit");
             this.enterGate = job.getBoolean("enterGate");
-            this.GPS = job.getJSONArray("GPS");
+            this.GPS = job.getJSONObject("GPS");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class Sector {
     public void setSubwayTracks(Boolean subwayTracks) {this.subwayTracks=subwayTracks;}
     public void setExit(Boolean exit) {this.exit = exit;}
     public void setEnterGate(Boolean enterGate) { this.enterGate = enterGate;}
-    public void setGPS(JSONArray GPS) { this.GPS = GPS; }
+    public void setGPS(JSONObject GPS) { this.GPS = GPS; }
 
 
     public String getId(){ return this.id;}
@@ -85,5 +85,5 @@ public class Sector {
     public Boolean getSubwayTracks() { return this.subwayTracks; }
     public Boolean getExit() { return this.exit; }
     public Boolean getEnterGate() { return this.enterGate; }
-    public JSONArray getGPS() { return this.GPS;}
+    public JSONObject getGPS() { return this.GPS;}
 }
