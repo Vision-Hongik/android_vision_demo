@@ -1,5 +1,7 @@
 package com.example.vision;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,12 +41,13 @@ public class Sector {
             this.signBoard = job.getBoolean("signBoard");
             this.topBoard = job.getBoolean("topBoard");
             this.subwayTracks = job.getBoolean("subwayTracks");
-            this.exit = job.getBoolean("exit");
+            this.exit = job.getBoolean("Exit");
             this.enterGate = job.getBoolean("enterGate");
             this.GPS = job.getJSONObject("GPS");
 
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("obejct error", "Sector: " + e );
         }
     }
 

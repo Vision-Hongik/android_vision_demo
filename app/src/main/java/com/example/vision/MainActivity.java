@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onResponse(JSONArray response) {
             ArrayList<Sector> tmpMapdataList = new ArrayList<Sector>();
-
+            Log.e("h", "onResponse: " + response.toString());
             for(int i = 0; i< response.length(); i++){
                 try {
                     tmpMapdataList.add(new Sector(response.getJSONObject(i)));
@@ -179,7 +179,20 @@ public class MainActivity extends AppCompatActivity {
             Log.e("h", "length " + service.getMapdataArrayList().size());
 
             for(int i=0; i < service.getMapdataArrayList().size(); i++){
-                Log.e("h", "onResponse: " + service.getMapdataArrayList().get(i).getName());
+                Log.e("h", "onResponse Name: " + service.getMapdataArrayList().get(i).getName());
+                Log.e("h", "onResponse ID: " + service.getMapdataArrayList().get(i).getId());
+                Log.e("h", "onResponse type: " + service.getMapdataArrayList().get(i).getType());
+                Log.e("h", "onResponse dot: " + service.getMapdataArrayList().get(i).getDot());
+                Log.e("h", "onResponse Line: " + service.getMapdataArrayList().get(i).getLine());
+                Log.e("h", "onResponse escalator: " + service.getMapdataArrayList().get(i).getEscalator());
+                Log.e("h", "onResponse Stairs: " + service.getMapdataArrayList().get(i).getStairs());
+                Log.e("h", "onResponse Pillar: " + service.getMapdataArrayList().get(i).getPillar());
+                Log.e("h", "onResponse signBoard: " + service.getMapdataArrayList().get(i).getSignBoard());
+                Log.e("h", "onResponse Topboard: " + service.getMapdataArrayList().get(i).getTopBoard());
+                Log.e("h", "onResponse subwayTracks: " + service.getMapdataArrayList().get(i).getSubwayTracks());
+                Log.e("h", "onResponse Exit: " + service.getMapdataArrayList().get(i).getExit());
+                Log.e("h", "onResponse enterGate: " + service.getMapdataArrayList().get(i).getEnterGate());
+                Log.e("h", "onResponse GPS: " + service.getMapdataArrayList().get(i).getGPS());
             }
 
         } //onResponse
