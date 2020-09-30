@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
+    //STT 테스트용 리스너
     private RecognitionListener voiceListener= new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
+    // 출발지 물어보는 리스너
     private RecognitionListener sourceStationVoiceListener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
@@ -383,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-
+    // 도착지 물어보는 리스너
     private RecognitionListener destStationVoiceListener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
@@ -487,7 +487,7 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-
+    // 마지막 확정 리스너
     private RecognitionListener confirmVoiceListener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
