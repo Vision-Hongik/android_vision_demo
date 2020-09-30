@@ -368,7 +368,6 @@ public class MainActivity extends AppCompatActivity {
 
             service.setSource_Station(mResult.get(0));
             Log.e("v", "Start Station onResults: " + service.getSource_Station() );
-
             srcEdit.setText(mResult.get(0));
 
             try {
@@ -586,12 +585,11 @@ public class MainActivity extends AppCompatActivity {
                 if(answer.charAt(0) != '네' && answer.charAt(0) != '내'){
                     voice.TTS("어디 역에서 출발 하시나요?");
                     voice.setRecognitionListener(sourceStationVoiceListener);
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    Thread.sleep(2000);
                     voice.STT();
+                }
+                else{
+                    Log.e("v", "Result src & dst: "+ service.getSource_Station() + " " + service.getDest_Station());
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
