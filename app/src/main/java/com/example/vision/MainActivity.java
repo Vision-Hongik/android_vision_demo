@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onResponse(JSONArray response) {
             ArrayList<Sector> tmpMapdataList = new ArrayList<Sector>();
-            Log.e("h", "onResponse: " + response.toString());
+            Log.e("h", "Map API onResponse: " + response.toString());
             for(int i = 0; i< response.length(); i++){
                 try {
                     tmpMapdataList.add(new Sector(response.getJSONObject(i)));
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             service.setSectorArrayList(tmpMapdataList);
-            Log.e("h", "length " + service.getMapdataArrayList().size());
+            Log.e("h", "Number of Sector : " + service.getMapdataArrayList().size());
 
             for(int i=0; i < service.getMapdataArrayList().size(); i++){
                 Log.e("h", "onResponse Name: " + service.getMapdataArrayList().get(i).getName());
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("h", "onResponse subwayTracks: " + service.getMapdataArrayList().get(i).getSubwayTracks());
                 Log.e("h", "onResponse Exit: " + service.getMapdataArrayList().get(i).getExit());
                 Log.e("h", "onResponse enterGate: " + service.getMapdataArrayList().get(i).getEnterGate());
-                Log.e("h", "onResponse GPS: " + service.getMapdataArrayList().get(i).getGPS());
+                Log.e("h", "onResponse GPS: " + service.getMapdataArrayList().get(i).getGPS() + "\n");
             }
 
         } //onResponse
@@ -590,6 +590,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     Log.e("v", "Result src & dst: "+ service.getSource_Station() + " " + service.getDest_Station());
+                    getMapData_To_Service_From_Server("sangsu");
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -610,6 +611,14 @@ public class MainActivity extends AppCompatActivity {
 
 //--Function----------------------------------------------------------------------------------------------------------------------------------------
 
+
+    public void getMapData_To_Service_From_Server(String stationName){
+        Log.e("t", "GET : /mapdata/"+stationName);
+
+        // Map api에 전송
+        MapRequest jsonRequest = new MapRequest(stationName, jsonArrayListener);
+        requestQueue.add(jsonRequest);
+    }
 
     private void FuncVoiceOrderCheck(String VoiceMsg){
         if(VoiceMsg.length()<1)return;
@@ -675,6 +684,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }//turn_on_gps end
+
 
     @Override
     protected void onStart() {
