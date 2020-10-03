@@ -15,7 +15,9 @@ public class Service {
     private ArrayList<Sector> sectorArrayList;
     //instances data structure class;
 
-    public Service(){ }
+    public Service(){
+        this.sectorArrayList = new ArrayList<Sector>();
+    }
 
     public Service(String source_Station, String source_Exit, String dest_Station, String dest_Exit){
         // if 출발지점이 null 이라면, 알아서 계산한다.
@@ -23,10 +25,9 @@ public class Service {
         this.source_Exit = source_Exit;
         this.dest_Station = dest_Station;
         this.dest_Exit = dest_Exit;
-
+        this.sectorArrayList = new ArrayList<Sector>();
     }
     public void startService(){
-        sectorArrayList = new ArrayList<Sector>();
 
         // voice 출발지  -> 모르면 GPS 찾기  -> GPS랑 mapdata를 사용해서 찾는 함수 구현. 상수
         // 몇번출구? -> 2번
@@ -95,7 +96,7 @@ public class Service {
     }
 
     // 얕 복사본을 넘겨준다.은 .. -> Mapdata 클래스의 깊은 복사자를 만들어야되는데 귀찮다..ㅜ
-    public ArrayList<Sector> getMapdataArrayList() {
+    public ArrayList<Sector> getSectorArrayList() {
         return this.sectorArrayList;
     }
 
