@@ -72,12 +72,14 @@ public class Voice {
 
 
     public void TTS(String OutMsg){
-        if(OutMsg.length()<1)return;
+        if(OutMsg.length()<1) return;
+
 
         tts.setPitch(1.0f);//목소리 톤1.0
         tts.setSpeechRate(1.0f);//목소리 속도
-        tts.speak(OutMsg,TextToSpeech.QUEUE_FLUSH,null,null);
+        tts.speak(OutMsg,TextToSpeech.QUEUE_FLUSH,null);
         //어플이 종료할때는 완전히 제거
+
     }
 
     public void setRecognitionListener(RecognitionListener listener){
