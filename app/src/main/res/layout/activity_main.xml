@@ -10,7 +10,6 @@
 
 
 
-
     <Button
         android:id="@+id/api"
         android:layout_width="match_parent"
@@ -26,7 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:hint = "음성인식된 값 출력란" />
 
     <EditText
         android:id="@+id/stt_statusEdit"
@@ -51,7 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:hint = "TexttoSpeech 할 텍스트값 입력"/>
 
     <Button
         android:id="@+id/TTS"
@@ -67,7 +68,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:hint = "출발지 인식란"/>
 
     <EditText
         android:id="@+id/dest_edit"
@@ -75,7 +77,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:hint = "도착지 인식란"/>
 
     <Button
         android:id="@+id/init_button"
