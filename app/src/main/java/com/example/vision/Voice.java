@@ -47,7 +47,7 @@ public class Voice {
                     if (lang == TextToSpeech.LANG_MISSING_DATA
                             || lang == TextToSpeech.LANG_NOT_SUPPORTED) {
                         // 언어 데이터가 없거나, 지원하지 않는경우
-                        Toast.makeText(Voice.this.activity, "TTS 한글 지원 안함", Toast.LENGTH_SHORT).show();
+                        Log.e("TTS", "onInit: Fail 지원 언어 없음.");
                     }
                 }
                 else{
@@ -77,7 +77,7 @@ public class Voice {
 
         tts.setPitch(1.0f);//목소리 톤1.0
         tts.setSpeechRate(1.0f);//목소리 속도
-        tts.speak(OutMsg,TextToSpeech.QUEUE_FLUSH,null);
+        tts.speak(OutMsg,TextToSpeech.QUEUE_FLUSH,null,null);
         //어플이 종료할때는 완전히 제거
 
     }
