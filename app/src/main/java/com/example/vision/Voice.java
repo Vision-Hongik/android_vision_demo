@@ -8,6 +8,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -41,8 +42,16 @@ public class Voice {
             @Override
             public void onInit(int status) {
                 if(status!= TextToSpeech.ERROR){
-                    tts.setLanguage(Locale.KOREAN);
-                    Log.e("TTS", "onInit: ERROR");
+                    int lang = tts.setLanguage(Locale.KOREAN);
+                    Log.e("TTS", "onInit: Succes");
+                    if (lang == TextToSpeech.LANG_MISSING_DATA
+                            || lang == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        // 언어 데이터가 없거나, 지원하지 않는경우
+                        Toast.makeText(Voice.this.activity, "TTS 한글 지원 안함", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Log.e("TTS", "onInit: Fail");
                 }
             }
         });
