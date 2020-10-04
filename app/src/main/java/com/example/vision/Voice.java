@@ -3,7 +3,6 @@ package com.example.vision;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class Voice {
@@ -44,6 +42,7 @@ public class Voice {
             public void onInit(int status) {
                 if(status!= TextToSpeech.ERROR){
                     tts.setLanguage(Locale.KOREAN);
+                    Log.e("TTS", "onInit: ERROR");
                 }
             }
         });
