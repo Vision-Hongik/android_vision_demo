@@ -334,6 +334,8 @@ public class MainActivity extends AppCompatActivity {
                         //제대로 체크됬다면 확정짓고 출발역의 맵데이터를 가져온다.
                         Log.e("v", "Result src & dst: "+ service.getSource_Station() + " " + service.getDest_Station());
 
+                        // ~~~~
+
                         // 맵데이터를 서비스에 셋팅을 완료한 후 navigate를 실행하기 위해, callback 함수를 통해 사용한다.
                         getMapData_To_Service_From_Server("sangsu", new Callback() {
                             @Override
@@ -341,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
                                 navigate();
                             }
                         });
+
 
                     }
                 } catch (InterruptedException e) {
@@ -584,6 +587,7 @@ public class MainActivity extends AppCompatActivity {
     public void navigate(){
         Log.e("n", "Navigate 시작" );
         voice.TTS(service.getSource_Station() + "에서 " + service.getDest_Station() + "까지 경로 안내를 시작합니다.");
+
     }
 
     // MapData를 서버로 부터 얻어서 Service 객체에 셋
